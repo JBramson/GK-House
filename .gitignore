@@ -1,0 +1,6 @@
+.env
+.vscode/
+brothers
+chores.txt
+__pycache__
+secrets.py

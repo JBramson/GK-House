@@ -1,6 +1,6 @@
 This is a Discord bot that helps brothers submit their chores and allows the House Manager to track/assign/forgive makeup chores.
 
-Commands are in main.py, along with time_check(), which is always looping/waiting, triggring when it is time to notify people of their chores/announce the end of the week. Additionally, it contains some logic to save and load everyone's .json, which contains a brother's information, including their submission status.
+Commands are in main.py, along with time_check(), which is always looping/waiting, triggering when it is time to notify people of their chores/announce the end of the week. Additionally, it contains some logic to save and load everyone's .json, which contains a brother's information, including their submission status.
 
 settings.py contains a series of "constants" that are used in multiple places in the program, such as the time that chore reminders are triggered.
 

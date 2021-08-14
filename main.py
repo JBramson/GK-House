@@ -103,7 +103,6 @@ async def info(ctx):
 	embed.add_field(name="Day", value=helpers.get_day_str(brother["day"]), inline=True)
 	embed.add_field(name="Shift", value=helpers.get_shift_str(brother["shift"]), inline=True)
 	embed.add_field(name="Makeup", value=(helpers.get_day_str(brother["makeup day"]) + ' ' + helpers.get_shift_str(brother["makeup shift"])), inline=False)
-	# embed.add_field(name="Makeup Shift", value=, inline=False)
 	embed.add_field(name="Outstanding Makeup Chores", value=brother["makeup"], inline=False)
 	embed.set_footer(text=datetime.now(time_zone_obj))
 
@@ -161,6 +160,9 @@ async def time_check():
 		day = datetime.now(time_zone_obj).today().weekday() # Get the current day as a number (0 = Monday)
 		now = datetime.strftime(datetime.now(time_zone_obj), "%H:%M") # Get the current time of the day
 
+		"""
+		Primary chore lookup and pinging
+		"""
 		# Check if it's time to do chores
 		if now == settings.MORNING_CHORES_TIME:
 			is_shift_time = True
@@ -183,6 +185,17 @@ async def time_check():
 				await channel.send(settings.SUBMISSION_REMINDER_MESSAGE)
 			else: # If the shift is open, let people know that they can fill it (and should, if they have make-up chores)
 				await channel.send(f"Attention {helpers.get_delinquents(brothers)}! {settings.AVAILABLE_SHIFT_REMINDER}")
+		"""
+		END OF primary chore lookup and pinging
+		"""
+
+		"""
+		Makeup chore lookup and pinging
+		"""
+
+		"""
+		END OF makeup chore lookup and pinging
+		"""
 
 		# If the week has ended, announce it and ping each brother that hasn't done chores, giving each a makeup chore.
 		if (day == settings.NEW_WEEK_DAY) and (now == settings.NEW_WEEK_TIME):

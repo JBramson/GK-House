@@ -18,6 +18,7 @@ DUPLICATE_BROTHERS_ERROR_MESSAGE = f"It looks like this user already has a profi
 WAIT_ON_SUCCESS = 3600 # How long, in seconds, we want to wait after a successful check (Make sure this doesn't extend a sleep() past the week's end)
 WAIT_ON_FAIL = 30 # How long, in seconds, we want to wait after a failed check (MUST BE LESS THAN 1 MINUTE). Lower numbers mean less delay after time change; larger numbers mean less wasted computing power
 REMINDER_DELAY = 3600 # How long, in seconds, we want to wait before reminding people to submit their chores.
+MAXIMUM_REMINDERS = 3 # How many times we wish to remind someone of their chores (after the initial ping). MAKE SURE THIS NUMBER * THE REMINDER_DELAY DOESN'T PUT REMINDERS PAST THE NEXT EVENT (NEW SHIFT/WEEK)
 
 IN_DEBUG_MESSAGE = "\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\nWARNING- currently in debug mode! Certain values may be different. Check settings.py for details.\n\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*\*"
 HOUSE_MANAGER_ROLE = "House Manager" # The name of the role assigned to the house manager that enables them to run "admin" commands
@@ -34,7 +35,7 @@ if IN_DEBUG:
 	print(IN_DEBUG_MESSAGE)
 	MORNING_CHORES_TIME = "12:29" # Military time
 	AFTERNOON_CHORES_TIME = "12:30" # Military time
-	EVENING_CHORES_TIME = "22:20" # Military time
+	EVENING_CHORES_TIME = "22:27" # Military time
 	NEW_WEEK_DAY = 0 # The day of the week in which a new week begins (0-6, Mon-Sun)
 	NEW_WEEK_TIME = "20:26" # The time of day in which the new week begins
 	WAIT_ON_SUCCESS = 61 # How long, in seconds, we want to wait after a successful check (MUST BE GREATER THAN 1 MINUTE).

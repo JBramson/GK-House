@@ -44,6 +44,8 @@ with open("chores.txt", 'r') as f:
 	for chore in f:
 		chores.append(chore[:-1]) # Extract each line as its own chore and add it to chores (ignore the last character [newline])
 
+chore_doers = [] # Hold mentions of people that need to do chores in the current shift
+
 # Create a dict with a brother's info, add it to the list, and store it as a json.
 def create_brother(day, shift, makeup_day, makeup_shift, mention, name):
 	brother = {"name": name,
@@ -130,9 +132,10 @@ async def submit(ctx):
 	# If they don't have a json already, something's gone wrong and they shouldn't have one created now.
 	if result.startswith("You don't"):
 		return
-	# Then, update their json
+	# Then, update their json and remove them from chore_doers
 	for brother in brothers:
 		if brother["name"] == ctx.author.name:
+			chore_doers.remove(brother["mention"])
 			create_json(brother)
 
 @bot.command(aliases=["chores", "getchores", "get_chores"])
@@ -180,18 +183,30 @@ async def time_check():
 		
 		# If it is time to do chores, let the appropriate people know.
 		if is_shift_time:
+			chore_doers.clear() # The old shift people have missed their chance and won't be pinged again, but will still be able to submit until the end of the week.
 			if mention != "@Free_Shift": # If the shift is held by a brother, ping them.
+				chore_doers.append(mention)
 				await channel.send(f"Alright {mention}, {settings.CHORES_REMINDER_MESSAGE}")
 				await asyncio.sleep(settings.MULTIPLE_MESSAGES_DELAY)
 				await channel.send(settings.SUBMISSION_REMINDER_MESSAGE)
 			else: # If the shift is open, let people know that they can fill it (and should, if they have make-up chores)
 				await channel.send(f"Attention {helpers.get_delinquents(brothers)}! {settings.AVAILABLE_SHIFT_REMINDER}")
 			if makeup_mention != "@No_Makeup": # If makeup mention is found, ping them.
+				chore_doers.clear() # The old shift people have missed their chance and won't be pinged again, but will still be able to submit until the end of the week.
 				await channel.send(f"Also, {makeup_mention}, {settings.MAKEUP_CHORES_REMINDER_MESSAGE}")
+
+		# New loop for reminders:
+		# If wait_time is set to the success time:
+			# Set wait_time to the fail time
+			# For i: (0, num of reminders):
+				# Wait prescribed length of time
+				# For brother in 
+
 
 
 		# If the week has ended, announce it and ping each brother that hasn't done chores, giving each a makeup chore.
 		if (day == settings.NEW_WEEK_DAY) and (now == settings.NEW_WEEK_TIME):
+			chore_doers.clear() # As the week is over, we shouldn't be pinging these people anymore.
 			delinquent_brothers = helpers.handle_delinquents(brothers) # Extra makeup chores are assigned in the function
 
 			# Update each brother's json

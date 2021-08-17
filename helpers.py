@@ -5,6 +5,14 @@ def get_user(brothers, day, shift):
 			return brother["mention"]
 	return "@Free_Shift" # Return None if there is no brother in this shift.
 
+# Get a brother's mention tag for their makeup shift
+def get_makeup_user(brothers, day, shift):
+	for brother in brothers:
+		if (brother["makeup day"] == day) and (brother["makeup shift"] == shift):
+			if brother["makeup"] > 0:
+				return brother["mention"]
+	return "@No_Makeup"
+
 # Get a brother's dict entry given their @mention tag
 def get_dict_entry(brothers, mention):
 	for brother in brothers:

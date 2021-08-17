@@ -15,6 +15,7 @@ from keep_alive import keep_alive
 # Double ping people when their chore is due
 # Add secondary chore slot
 # Change the name & photo to "Mike"
+# Add admin command to ping all delinquents
 
 #########################
 # General objects/vars: #
@@ -160,22 +161,22 @@ async def time_check():
 		day = datetime.now(time_zone_obj).today().weekday() # Get the current day as a number (0 = Monday)
 		now = datetime.strftime(datetime.now(time_zone_obj), "%H:%M") # Get the current time of the day
 
-		"""
-		Primary chore lookup and pinging
-		"""
 		# Check if it's time to do chores
 		if now == settings.MORNING_CHORES_TIME:
 			is_shift_time = True
 			wait_time = settings.WAIT_ON_SUCCESS # Wait a longer time to start checking again
 			mention = helpers.get_user(brothers, day, 0) # Get the appropriate brother's name
+			makeup_mention = helpers.get_makeup_user(brothers, day, 0) # Get makeup brother's mention
 		elif now == settings.AFTERNOON_CHORES_TIME:
 			is_shift_time = True
 			wait_time = settings.WAIT_ON_SUCCESS # Wait a longer time to start checking again
 			mention = helpers.get_user(brothers, day, 1) # Get the appropriate brother's name
+			makeup_mention = helpers.get_makeup_user(brothers, day, 1) # Get makeup brother's mention
 		elif now == settings.EVENING_CHORES_TIME:
 			is_shift_time = True
 			wait_time = settings.WAIT_ON_SUCCESS # Wait a longer time to start checking again
 			mention = helpers.get_user(brothers, day, 2) # Get the appropriate brother's name
+			makeup_mention = helpers.get_makeup_user(brothers, day, 2) # Get makeup brother's mention
 		
 		# If it is time to do chores, let the appropriate people know.
 		if is_shift_time:
@@ -185,17 +186,9 @@ async def time_check():
 				await channel.send(settings.SUBMISSION_REMINDER_MESSAGE)
 			else: # If the shift is open, let people know that they can fill it (and should, if they have make-up chores)
 				await channel.send(f"Attention {helpers.get_delinquents(brothers)}! {settings.AVAILABLE_SHIFT_REMINDER}")
-		"""
-		END OF primary chore lookup and pinging
-		"""
+			if makeup_mention != "@No_Makeup": # If makeup mention is found, ping them.
+				await channel.send(f"Also, {makeup_mention}, {settings.MAKEUP_CHORES_REMINDER_MESSAGE}")
 
-		"""
-		Makeup chore lookup and pinging
-		"""
-
-		"""
-		END OF makeup chore lookup and pinging
-		"""
 
 		# If the week has ended, announce it and ping each brother that hasn't done chores, giving each a makeup chore.
 		if (day == settings.NEW_WEEK_DAY) and (now == settings.NEW_WEEK_TIME):
@@ -224,12 +217,19 @@ async def get_time(ctx):
 # Admin commands: #
 ###################
 
-@bot.command(aliases=["addbrother"])
+@bot.command(aliases=["addbrother", "ab"])
 @commands.has_role(settings.HOUSE_MANAGER_ROLE)
 async def add_brother(ctx, user: discord.Member, day, shift, makeup_day, makeup_shift):
 	"""
 	ADMIN: Create a brother object, create a json for him, and add it to brothers
 	"""
+
+	# Make sure we're not adding a duplicate brother
+	for brother in brothers:
+		if brother["name"] == user.name:
+			await ctx.send(f"{settings.DUPLICATE_BROTHERS_ERROR_MESSAGE}")
+			return # Abort this attempt
+
 	day = day.upper() # Convert day to uppercase
 	if day == "MO":
 		day = 0
@@ -325,9 +325,9 @@ async def add_brother(ctx, user: discord.Member, day, shift, makeup_day, makeup_
 	create_brother(day, shift, makeup_day, makeup_shift, user.mention, user.name) # Add our new brother
 	# brother = Brother(day, shift, user)
 
-	await ctx.send(f"Brother **{user}** added successfully for **{day_long}** **{shift_long}**, with backup of")
+	await ctx.send(f"Brother **{user}** added successfully for **{day_long}** **{shift_long}**, with **{makeup_day_long}** **{makeup_shift_long}** as makeup.")
 
-@bot.command(aliases=["removebrother", "deletebrother", "rmbrother"])
+@bot.command(aliases=["removebrother", "deletebrother", "rmbrother", "rmb"])
 @commands.has_role(settings.HOUSE_MANAGER_ROLE)
 async def remove_brother(ctx, user: discord.Member):
 	"""

@@ -402,6 +402,18 @@ async def remove_chore(ctx, new_chore):
 	await ctx.send(f"**{new_chore}** removed. The current (non-exaustive) list of chores is: {chores}")
 	update_chores(chores) # Update the json
 
+@bot.command(aliases=["getdelinquents", "delinquents", "bitches"])
+@commands.has_role(settings.HOUSE_MANAGER_ROLE)
+async def get_delinquents(ctx):
+	"""
+	ADMIN: Ping all brothers that owe makeup chores and how many they owe
+	"""
+	delinquents = helpers.get_delinquent_info(brothers)
+	# await ctx.send(f"Here are the indebted: {delinquents}")
+	message = "Here are the indebted:"
+	await ctx.send(f"{delinquents}")
+
+
 ###########################
 # Housekeeping functions: #
 ###########################

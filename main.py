@@ -11,12 +11,6 @@ import helpers
 import secrets
 from keep_alive import keep_alive
 
-# TODO:
-# Double ping people when their chore is due
-# Add secondary chore slot
-# Change the name & photo to "Mike"
-# Add admin command to ping all delinquents
-
 #########################
 # General objects/vars: #
 #########################
@@ -409,9 +403,10 @@ async def get_delinquents(ctx):
 	ADMIN: Ping all brothers that owe makeup chores and how many they owe
 	"""
 	delinquents = helpers.get_delinquent_info(brothers)
-	# await ctx.send(f"Here are the indebted: {delinquents}")
 	message = "Here are the indebted:"
-	await ctx.send(f"{delinquents}")
+	for delinquent in delinquents:
+		message += "\n" + delinquent[0] + ": " + str(delinquent[1])
+	await ctx.send(message)
 
 
 ###########################

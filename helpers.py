@@ -37,13 +37,11 @@ def get_delinquent_info(brothers):
 			index_found = False
 			for i in range(0, len(delinquents_set)):
 				if delinquent[1] >= delinquents_set[i][1]:
-					print(f"Inserted {delinquent[0]} into index {i} because {delinquent[1]} >= {delinquents_set[i][1]}.")
 					delinquents_set.insert(i, delinquent)
 					index_found = True
 					break
 				index_found = False
 			if not index_found: # We only want to insert at the end if this delinquent owes less than the others
-				print(f"Inserted {delinquent[0]} into the end because {delinquent[1]} was the smaller than everything in: {delinquents_set}.")
 				delinquents_set.insert(len(delinquents_set), delinquent)
 	return delinquents_set
 

@@ -135,7 +135,8 @@ async def submit(ctx):
 	# Then, update their json and remove them from chore_doers
 	for brother in brothers:
 		if brother["name"] == ctx.author.name:
-			chore_doers.remove(brother["mention"])
+			if chore_doers.count(brother["mention"]) > 0:
+				chore_doers.remove(brother["mention"])
 			create_json(brother)
 
 @bot.command(aliases=["chores", "getchores", "get_chores"])
@@ -192,15 +193,18 @@ async def time_check():
 			else: # If the shift is open, let people know that they can fill it (and should, if they have make-up chores)
 				await channel.send(f"Attention {helpers.get_delinquents(brothers)}! {settings.AVAILABLE_SHIFT_REMINDER}")
 			if makeup_mention != "@No_Makeup": # If makeup mention is found, ping them.
-				chore_doers.clear() # The old shift people have missed their chance and won't be pinged again, but will still be able to submit until the end of the week.
+				chore_doers.append(makeup_mention)
 				await channel.send(f"Also, {makeup_mention}, {settings.MAKEUP_CHORES_REMINDER_MESSAGE}")
 
-		# New loop for reminders:
-		# If wait_time is set to the success time:
-			# Set wait_time to the fail time
-			# For i: (0, num of reminders):
-				# Wait prescribed length of time
-				# For brother in 
+		# Remind people a few times if they haven't submitted yet
+		if is_shift_time:
+			# print("It's shift time") # Debugging message- can remove later
+			for i in range(0, settings.MAXIMUM_REMINDERS):
+				await asyncio.sleep(settings.REMINDER_DELAY)
+				if len(chore_doers) > 0: # if we're empty, we can stop because there's no one to remind.
+					# print(f"Sleeping for {settings.REMINDER_DELAY}: {i}") # Debugging message- can remove later
+					await channel.send(f"Attention {chore_doers}, this is a reminder to do your chores and **{settings.COM_PREFIX}submit** if this is your primary slot or ask the House Manager to forgive a makeup chore if this is your makeup slot.")
+		
 
 
 
@@ -368,6 +372,10 @@ async def forgive(ctx, user: discord.Member, num: int):
 	# Find the appropriate brother
 	for brother in brothers:
 		if brother["mention"] == user.mention:
+			# Remove them from chore_doers if they're present so they stop getting pinged
+			if chore_doers.count(brother["mention"]) > 0:
+				chore_doers.remove(brother["mention"])
+
 			brother["makeup"] -= num
 			await ctx.send(f"Brother {brother['name']} has had {num} makeup chore(s) forgiven and now owes {brother['makeup']}.")
 			create_json(brother) # Update the brother's json

@@ -163,24 +163,28 @@ async def time_check():
 		if now == settings.MORNING_CHORES_TIME:
 			is_shift_time = True
 			wait_time = settings.WAIT_ON_SUCCESS # Wait a longer time to start checking again
-			mention = helpers.get_user(brothers, day, 0) # Get the appropriate brother's name
+			mention = helpers.get_user(brothers, day, 0) # Get the appropriate brother's/brothers' name(s)
 			makeup_mention = helpers.get_makeup_user(brothers, day, 0) # Get makeup brother's mention
 		elif now == settings.AFTERNOON_CHORES_TIME:
 			is_shift_time = True
 			wait_time = settings.WAIT_ON_SUCCESS # Wait a longer time to start checking again
-			mention = helpers.get_user(brothers, day, 1) # Get the appropriate brother's name
+			mention = helpers.get_user(brothers, day, 1) # Get the appropriate brother's/brothers' name(s)
 			makeup_mention = helpers.get_makeup_user(brothers, day, 1) # Get makeup brother's mention
 		elif now == settings.EVENING_CHORES_TIME:
 			is_shift_time = True
 			wait_time = settings.WAIT_ON_SUCCESS # Wait a longer time to start checking again
-			mention = helpers.get_user(brothers, day, 2) # Get the appropriate brother's name
+			mention = helpers.get_user(brothers, day, 2) # Get the appropriate brother's/brothers' name(s)
 			makeup_mention = helpers.get_makeup_user(brothers, day, 2) # Get makeup brother's mention
 		
 		# If it is time to do chores, let the appropriate people know.
 		if is_shift_time:
 			chore_doers.clear() # The old shift people have missed their chance and won't be pinged again, but will still be able to submit until the end of the week.
 			if mention != "@Free_Shift": # If the shift is held by a brother, ping them.
-				chore_doers.append(mention)
+				if type(chore_doers) is not list: # If we have a single brother to ping for this slot, add their mention to chore_doers.
+					chore_doers.append(mention)
+				else: # If we have more than one brother to ping for this shift, add their mentions separately to chore_doers.
+					for m in mention:
+						chore_doers.append(m)
 				await channel.send(f"Alright {mention}, {settings.CHORES_REMINDER_MESSAGE}")
 				await asyncio.sleep(settings.MULTIPLE_MESSAGES_DELAY)
 				await channel.send(settings.SUBMISSION_REMINDER_MESSAGE)

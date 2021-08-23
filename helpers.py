@@ -1,9 +1,18 @@
 # Get a brother's mention tag given their day and shift
+# This can now return multiple brothers if they occupt the same shift
 def get_user(brothers, day, shift):
+	chore_doers = []
 	for brother in brothers:
 		if (brother["day"] == day) and (brother["shift"] == shift):
-			return brother["mention"]
-	return "@Free_Shift" # Return None if there is no brother in this shift.
+			chore_doers.append(brother["mention"])
+	
+	if len(chore_doers) == 0:
+		return "@Free_Shift" # Return None if there is no brother in this shift.
+	elif len(chore_doers) == 1:
+		return chore_doers[0] # Return the only brother if they're alone
+	else:
+		return chore_doers # Return the list if there are multiple
+
 
 # Get a brother's mention tag for their makeup shift
 def get_makeup_user(brothers, day, shift):

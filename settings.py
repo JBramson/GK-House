@@ -7,7 +7,7 @@ TIME_ZONE = "US/Mountain" # Timezone of operation - (DENVER) - overrides server 
 # TIME_ZONE = "US/Pacific" # Timezone of operation - (LOS ANGELES) - overrides server time
 MORNING_CHORES_TIME = "09:00" # Military time
 AFTERNOON_CHORES_TIME = "13:00" # Military time
-EVENING_CHORES_TIME = "20:00" # Military time
+EVENING_CHORES_TIME = "17:00" # Military time
 NEW_WEEK_DAY = 6 # The day of the week in which a new week begins (0-6, Mon-Sun)
 NEW_WEEK_TIME = "00:00" # The time of day in which the new week begins
 CHORES_REMINDER_MESSAGE = "it's time to do chores!"
@@ -35,7 +35,7 @@ if IN_DEBUG:
 	print(IN_DEBUG_MESSAGE)
 	MORNING_CHORES_TIME = "12:29" # Military time
 	AFTERNOON_CHORES_TIME = "14:52" # Military time
-	EVENING_CHORES_TIME = "17:03" # Military time
+	EVENING_CHORES_TIME = "19:06" # Military time
 	NEW_WEEK_DAY = 0 # The day of the week in which a new week begins (0-6, Mon-Sun)
 	NEW_WEEK_TIME = "15:00" # The time of day in which the new week begins
 	WAIT_ON_SUCCESS = 61 # How long, in seconds, we want to wait after a successful check (MUST BE GREATER THAN 1 MINUTE).

@@ -180,7 +180,7 @@ async def time_check():
 		if is_shift_time:
 			chore_doers.clear() # The old shift people have missed their chance and won't be pinged again, but will still be able to submit until the end of the week.
 			if mention != "@Free_Shift": # If the shift is held by a brother, ping them.
-				if type(chore_doers) is not list: # If we have a single brother to ping for this slot, add their mention to chore_doers.
+				if type(mention) is not list: # If we have a single brother to ping for this slot, add their mention to chore_doers.
 					chore_doers.append(mention)
 				else: # If we have more than one brother to ping for this shift, add their mentions separately to chore_doers.
 					for m in mention:

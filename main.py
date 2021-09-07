@@ -190,9 +190,10 @@ async def time_check():
 				await channel.send(settings.SUBMISSION_REMINDER_MESSAGE)
 			else: # If the shift is open, let people know that they can fill it (and should, if they have make-up chores)
 				await channel.send(f"Attention {helpers.get_delinquents(brothers)}! {settings.AVAILABLE_SHIFT_REMINDER}")
-			if makeup_mention != "@No_Makeup": # If makeup mention is found, ping them.
-				chore_doers.append(makeup_mention)
-				await channel.send(f"Also, {makeup_mention}, {settings.MAKEUP_CHORES_REMINDER_MESSAGE}")
+			# This is the code to add and ping people that owe makeup chores.
+			# if makeup_mention != "@No_Makeup": # If makeup mention is found, ping them.
+			# 	chore_doers.append(makeup_mention)
+			# 	await channel.send(f"Also, {makeup_mention}, {settings.MAKEUP_CHORES_REMINDER_MESSAGE}")
 
 		# Remind people a few times if they haven't submitted yet
 		if is_shift_time:
@@ -201,7 +202,7 @@ async def time_check():
 				await asyncio.sleep(settings.REMINDER_DELAY)
 				if len(chore_doers) > 0: # if we're empty, we can stop because there's no one to remind.
 					# print(f"Sleeping for {settings.REMINDER_DELAY}: {i}") # Debugging message- can remove later
-					await channel.send(f"Attention {chore_doers}, this is a reminder to do your chores and **{settings.COM_PREFIX}submit** if this is your primary slot or ask the House Manager to forgive a makeup chore if this is your makeup slot.")
+					await channel.send(f"Attention {chore_doers}, this is a reminder to do your chores and **{settings.COM_PREFIX}submit**.")
 		
 
 

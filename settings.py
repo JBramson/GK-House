@@ -2,10 +2,10 @@ COM_PREFIX = "!" # What must be inputted to start every command
 CASE_INSENSITIVE=True # If commands are case-sensitive or not
 MULTIPLE_MESSAGES_DELAY = 1 # Delay (in seconds) between certain succesive messages
 
-CHANNEL_ID = 786148048480501791 # ID for the channel in which we want the timers - MUST BE CHANGED FOR DEPLOYMENT
+CHANNEL_ID = 798416422736756767 # ID for the channel in which we want the timers - MUST BE CHANGED FOR DEPLOYMENT
 TIME_ZONE = "US/Mountain" # Timezone of operation - (DENVER) - overrides server time
 # TIME_ZONE = "US/Pacific" # Timezone of operation - (LOS ANGELES) - overrides server time
-MORNING_CHORES_TIME = "09:00" # Military time
+MORNING_CHORES_TIME = "08:00" # Military time
 AFTERNOON_CHORES_TIME = "13:00" # Military time
 EVENING_CHORES_TIME = "17:00" # Military time
 NEW_WEEK_DAY = 6 # The day of the week in which a new week begins (0-6, Mon-Sun)

@@ -78,6 +78,9 @@ bot.author_id = 242665900711346177
 async def on_ready():  # When the bot is ready
 	print("I'm in")
 	print(f"Current time (from my perspective): {datetime.now(time_zone_obj)}\nI am in the {settings.TIME_ZONE} time zone.")
+	print(f"Morning chores: {settings.MORNING_CHORES_TIME}")
+	print(f"Afternoon chores: {settings.AFTERNOON_CHORES_TIME}")
+	print(f"Evening chores: {settings.EVENING_CHORES_TIME}")
 	print(bot.user)  # Prints the bot's username and identifier
 	bot.loop.create_task(time_check()) # Starts the timer- DON'T CALL THIS AGAIN- it loops internally forever
 

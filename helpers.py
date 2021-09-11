@@ -76,10 +76,10 @@ def handle_submission(brothers, name):
 				message += "Thank you for submitting!"
 				brother["submitted"] = True
 			
-			if brother["makeup"] == 0:
+			if brother["makeup"] <= 0:
 				message += " You're all good for this week."
 			else:
-				message += "\nRemember to also do chores during your makeup slot, and that you can take available slots as makeup chores!"
+				message += "\nRemember that you can take available slots as makeup chores!"
 			
 			return message # Return after success
 	return "You don't seem to have a chores profile. Are you living in-house? Please contact the House Manager for more informaiton."

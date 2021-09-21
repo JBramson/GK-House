@@ -76,7 +76,7 @@ bot.author_id = 242665900711346177
 
 @bot.event 
 async def on_ready():  # When the bot is ready
-	print("I'm in")
+	print("Launched successfully.")
 	print(f"Current time (from my perspective): {datetime.now(time_zone_obj)}\nI am in the {settings.TIME_ZONE} time zone.")
 	print(f"Morning chores: {settings.MORNING_CHORES_TIME}")
 	print(f"Afternoon chores: {settings.AFTERNOON_CHORES_TIME}")
@@ -118,7 +118,7 @@ async def ping(ctx):
 	await ctx.send("Pong!")
 	pass
 
-@bot.command()
+@bot.command(aliases=[" submit", "sbubby", "sub"])
 async def submit(ctx):
 	"""
 	Submit your chores for the week

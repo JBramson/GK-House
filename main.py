@@ -9,7 +9,7 @@ import json
 import settings
 import helpers
 import secrets
-from keep_alive import keep_alive
+# from keep_alive import keep_alive
 
 #########################
 # General objects/vars: #
@@ -429,5 +429,4 @@ if __name__ == '__main__':  # Ensures this is the file being ran
 	for extension in extensions:
 		bot.load_extension(extension)  # Loades every extension.
 
-# keep_alive()  # Starts a webserver to be pinged. ENABLE THIS IF ON SERVER THAT TIMES OUT FOR INACTIVITY (e.g. Repl.it)
 bot.run(secrets.TOKEN_HOUSE)  # Starts the live housing bot (Be careful with this one)
